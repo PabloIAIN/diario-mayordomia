@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Diario de Mayordomía · Pablo Garza</title>
+<meta name="description" content="Diario de Mayordomía Personal de Pablo Iaín Garza García: 14 semanas de registros sobre tiempo, finanzas, talentos, cuidado personal y vida espiritual.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: bitácora semanal; portada, franja de 14 semanas, registros en línea de tiempo, evidencias y reflexión */
+:root{
+  --bg:#F2F4F1;--surface:#FFFFFF;--fg:#1C2623;--muted:#5E6B66;--line:#D7DDD8;--accent:#1F6B62;
+  --tiempo:#3A6EA5;--finanzas:#4E8A47;--talentos:#B9822A;--cuidado:#8B5A9C;--espiritual:#B5534F;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#141A18;--surface:#1C2421;--fg:#E6ECE9;--muted:#9AA8A2;--line:#2E3935;--accent:#5FBFB2;
+  --tiempo:#7FA9DA;--finanzas:#88C27F;--talentos:#E0B062;--cuidado:#C29BD3;--espiritual:#E4908B;color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6}
+.wrap{max-width:960px;margin:0 auto;padding-block:48px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:56px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(2.3rem,6.5vw,3.8rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:1.75rem;font-weight:700}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+section{display:grid;gap:18px}
+.lede{color:var(--muted);max-width:65ch}
+/* portada */
+.cover{display:grid;gap:18px;padding-bottom:36px;border-bottom:1px solid var(--line)}
+.verse{font-style:italic;color:var(--muted);max-width:60ch;font-size:1.05rem}
+.verse b{font-style:normal;font-family:var(--mono);font-size:.8rem;font-weight:500;color:var(--accent);margin-left:6px;white-space:nowrap}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px 28px;margin:8px 0 0;padding:0}
+.meta div{display:grid;gap:2px;min-width:0;align-content:start}
+.meta dt{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.meta dd{margin:0;font-weight:600}
+/* franja */
+.strip{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:5px}
+.cell{display:grid;gap:4px;text-decoration:none;color:var(--muted);font:500 .72rem var(--mono);text-align:center}
+.cell i{display:block;height:38px;border-radius:3px;background:var(--c)}
+.cell:hover i{opacity:.8}
+.cell:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+.legend{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:5px 12px;font:500 .78rem var(--mono);cursor:pointer}
+.chip::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--c)}
+.chip.all::before{display:none}
+.chip[aria-pressed="true"]{border-color:var(--c,var(--fg));box-shadow:inset 0 0 0 1px var(--c,var(--fg))}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* registros */
+.timeline{display:grid;gap:18px}
+.week{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:6px;padding:22px 24px;display:grid;gap:16px}
+.week[hidden]{display:none}
+.whead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.wnum{font-family:var(--display);font-weight:700;font-size:1.4rem}
+.dates{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.dim{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--c);font-weight:500}
+.follow{font-family:var(--mono);font-size:.72rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 28px}
+.f{min-width:0;display:grid;gap:4px;align-content:start}
+.f h3{font:500 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.f.obs p{border-left:2px solid var(--c);padding-left:12px}
+.ev{font-family:var(--mono);font-size:.76rem;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+/* tablas */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th{font:500 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:2px solid var(--fg)}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--muted)}
+td.d{white-space:nowrap}
+td.d span{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-right:7px}
+/* reflexión */
+.qa{display:grid;gap:22px;max-width:70ch}
+.qa h3{font-size:1.15rem;font-weight:700;margin-bottom:6px}
+footer{font-family:var(--mono);font-size:.76rem;color:var(--muted);border-top:1px solid var(--line);padding-top:18px}
+@media (max-width:640px){.fields{grid-template-columns:minmax(0,1fr)}.strip{grid-template-columns:repeat(7,minmax(0,1fr))}.week{padding:18px}}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+@media print{.legend,.strip{display:none}.week{break-inside:avoid}}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<header class="cover">
+  <div class="eyebrow">Universidad de Montemorelos · Mayordomía Cristiana</div>
+  <h1>Diario de Mayordomía Personal</h1>
+  <p class="verse">«Ahora bien, se requiere de los administradores, que cada uno sea hallado fiel.»<b>1 Corintios 4:2</b></p>
+  <dl class="meta">
+    <div><dt>Alumno</dt><dd>Pablo Iaín Garza García</dd></div>
+    <div><dt>Matrícula</dt><dd>1180625</dd></div>
+    <div><dt>Carrera</dt><dd>Ingeniería en Sistemas Computacionales, 9.º semestre</dd></div>
+    <div><dt>Periodo</dt><dd>23 de agosto al 28 de noviembre de 2026</dd></div>
+  </dl>
+</header>
+
+<section aria-labelledby="t-intro">
+  <div class="eyebrow">Introducción</div>
+  <h2 id="t-intro">Lo que entiendo por mayordomía</h2>
+  <div class="qa">
+    <p>Para mí, la mayordomía cristiana parte de una idea sencilla: nada de lo que tengo es realmente mío. Mi tiempo, mis talentos, mi dinero, mi cuerpo y hasta mi trabajo me fueron confiados por Dios, y de un encargo se rinde cuentas (1 Timoteo 1:11; 1 Corintios 4:2).</p>
+    <p>Al estudiar 1 y 2 Timoteo en clase me quedó claro que Pablo usa la palabra «encomendado»: lo que Timoteo tiene se lo prestaron para cuidarlo. Por eso administrar bien no es algo aparte de la fe, sino la forma práctica de vivirla: trabajar con excelencia aunque nadie revise, cuidar mi salud, ser generoso y no descuidar a los míos.</p>
+    <p>Este diario reúne 14 registros semanales, de domingo a sábado. Las semanas rotan entre las cinco dimensiones de la mayordomía, y las últimas cuatro dan seguimiento a las acciones de mejora que me propuse en las primeras.</p>
+  </div>
+</section>
+
+<section aria-labelledby="t-reg">
+  <div class="eyebrow">Registros semanales</div>
+  <h2 id="t-reg">14 semanas</h2>
+  <nav class="strip" id="strip" aria-label="Ir a una semana"></nav>
+  <div class="legend" id="legend" role="group" aria-label="Filtrar por dimensión"></div>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<section aria-labelledby="t-ev">
+  <div class="eyebrow">Respaldo</div>
+  <h2 id="t-ev">Evidencias</h2>
+  <p class="lede">Cada registro se apoya en un documento, trabajo de clase o registro de esa semana.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Sem.</th><th>Dimensión</th><th>Evidencia</th></tr></thead>
+    <tbody id="evid"></tbody>
+  </table></div>
+</section>
+
+<section aria-labelledby="t-fin">
+  <div class="eyebrow">Cierre</div>
+  <h2 id="t-fin">Reflexión final</h2>
+  <div class="qa">
+    <div><h3>¿Qué descubrí sobre la manera en que administro mi vida?</h3><p>Descubrí que administro bien lo que se ve y mal lo que no se ve. Cumplo con las prácticas, la escuela y mis proyectos, pero muchas veces lo hago a costa del descanso, del tiempo con Dios y de mi orden financiero. También noté que tiendo a reaccionar en lugar de planear: vendo algo cuando falta dinero y duermo de más cuando ya estoy agotado. Las semanas en que planeé antes, como la del estudio para Conexión Bíblica, fueron las que mejor administré.</p></div>
+    <div><h3>¿Cuál es el área de mi mayordomía que necesita mayor atención?</h3><p>El cuidado personal, y de la mano el tiempo. Las semanas 4 y 10 muestran el mismo patrón: cuando se acumula el trabajo, lo primero que sacrifico es dormir y comer bien. Ahora que empiezo a trabajar tiempo completo, ese patrón puede volverse costumbre si no pongo límites desde el principio.</p></div>
+    <div><h3>¿Qué cambio concreto experimenté durante esta actividad?</h3><p>Empecé a recibir ingresos por mis propios proyectos, y el dilema del diezmo que presenté en clase me obligó a decidir qué hacer con ellos antes de gastarlos: primero el diezmo, luego dar y ahorrar. También aprendí a poner precio a mi trabajo pensando en la persona y no solo en lo que puedo cobrar, como cuando reorganicé la cotización del sistema de mi tía para que cupiera en su presupuesto.</p></div>
+    <div><h3>¿Qué hábito o compromiso deseo mantener después de terminar el curso?</h3><p>Quiero mantener tres: planear cada domingo mi semana, separar el diezmo y el ahorro en cuanto reciba un pago, y dormir a una hora fija también en semanas de entregas. Además, quiero seguir usando mis talentos para servir sin cobrar, como con la aplicación para ensayar himnos.</p></div>
+    <div><h3>¿Cómo ha cambiado mi comprensión de la mayordomía cristiana?</h3><p>Antes la relacionaba casi solo con el dinero y el diezmo. Ahora entiendo que abarca todo lo que se me prestó: mi tiempo, mi cuerpo, mis dones y mi trabajo. Como dice 1 Corintios 4:2, no se me pide ser perfecto, sino fiel. Esa fidelidad se demuestra en decisiones pequeñas de cada semana, como a qué hora me duermo, cuánto cobro o qué hago con el primer peso que recibo.</p></div>
+  </div>
+</section>
+
+<footer>Pablo Iaín Garza García · Mayordomía Cristiana · Universidad de Montemorelos · Noviembre de 2026</footer>
+</main>
+
+<script>
+const DIMS={tiempo:"Tiempo",finanzas:"Recursos financieros",talentos:"Talentos y capacidades",cuidado:"Cuidado personal",espiritual:"Vida espiritual y servicio"};
+const W=[
+{n:1,d:"23 – 29 ago",k:"tiempo",
+ sit:"Arranqué el semestre al mismo tiempo que las prácticas en SunPlus. Esa semana seguía desplegando el lakehouse de la empresa en tres servidores y resolviendo errores de instalación y de red uno por uno, muchas veces hasta tarde.",
+ obs:"Depurar errores no tiene hora de salida: un problema de red se puede comer la tarde completa. Me di cuenta de que mi agenda la decidía el problema técnico y no yo, y que lo primero que soltaba era el tiempo con Dios y el descanso.",
+ pri:"1 Timoteo 4:7-8: lo espiritual se entrena con disciplina, igual que el cuerpo o el estudio. Efesios 5:15-16: aprovechar bien el tiempo.",
+ acc:"Poner una hora de corte para depurar: si el problema no se resuelve, lo documento y sigo al día siguiente. Apartar un bloque fijo para Dios antes de abrir la computadora.",
+ ev:"Guía de implementación del lakehouse (documento de prácticas)"},
+{n:2,d:"30 ago – 5 sep",k:"espiritual",
+ sit:"Hice con Andrei y David el trabajo «¿Qué me confió Dios?» sobre 1 y 2 Timoteo. Concluimos que nada de lo que tenemos es nuestro: tiempo, talento, dinero, familia y trabajo son prestados.",
+ obs:"En el cuadro escribí aplicaciones muy concretas, como atreverme a proponer en el trabajo en vez de quedarme callado por ser el más nuevo. Escribirlo fue fácil; me di cuenta de que en mis prácticas todavía me cuesta hablar en las reuniones.",
+ pri:"1 Timoteo 1:11 y 6:20: lo que Dios nos da es un encargo del que vamos a rendir cuentas, no una propiedad. 2 Timoteo 1:7: Dios no nos dio espíritu de cobardía.",
+ acc:"Practicar una de las aplicaciones del cuadro: proponer al menos una mejora o hacer una pregunta por semana en el trabajo, en lugar de quedarme callado.",
+ ev:"Trabajo en equipo «¿Qué me confió Dios? (1 y 2 Timoteo)», 1 y 2 de septiembre"},
+{n:3,d:"6 – 12 sep",k:"tiempo",
+ sit:"El domingo 7 de septiembre lo pasé redactando el resumen de la automatización del lago de datos. Entre el 8 y el 10 escribí varias guías y el rediseño del refresco de tablas.",
+ obs:"El trabajo de las prácticas se pasó al fin de semana sin que nadie me lo pidiera. Lo hice porque quería dejarlo bien, pero me cuesta separar el «quiero hacerlo bien» del «no tengo que hacerlo ahora».",
+ pri:"1 Timoteo 5:8: responder por los míos y no dejar que el trabajo me absorba. Efesios 5:16: usar bien el tiempo.",
+ acc:"Domingos sin trabajo de prácticas, salvo emergencias reales. Documentar dentro del horario laboral, en la última media hora del día.",
+ ev:"Resumen de automatización del lago de datos, fechado el domingo 7 de septiembre"},
+{n:4,d:"13 – 19 sep",k:"cuidado",
+ sit:"Semana pesada entre clases y prácticas: estaba armando el documento de arquitectura de la aplicación de administración del lakehouse. Me dormía tarde frente a la computadora, comía a deshoras y no hice ejercicio.",
+ obs:"Trato mi cuerpo como si no tuviera límite: lo uso hasta que se cansa y luego lo compenso durmiendo de más el fin de semana. Solo me acuerdo de cuidarme cuando ya me siento mal, y eso no es administrar, es reaccionar.",
+ pri:"1 Corintios 6:19-20: el cuerpo es templo del Espíritu Santo; cuidarlo es parte de la mayordomía. 3 Juan 2: que tengas salud, así como prospera tu alma.",
+ acc:"Caminar 30 minutos tres veces por semana y tener una hora fija para cenar, lejos de la computadora.",
+ ev:"Documento de arquitectura de la aplicación del lakehouse, 14 de septiembre"},
+{n:5,d:"20 – 26 sep",k:"finanzas",
+ sit:"Vendí mi laptop y unos trajes por grupos de WhatsApp, y me registré en una plataforma de anotación de datos para conseguir ingresos extra. También decidí desarrollar un bot de WhatsApp con IA para ofrecerlo a negocios.",
+ obs:"Cuando falta dinero, mi reacción es vender algo o buscar un ingreso nuevo. Pero no tengo un presupuesto que me diga cuánto necesito ni en qué se me va, así que estoy resolviendo el síntoma y no la causa.",
+ pri:"1 Timoteo 6:6-10: la piedad con contentamiento es gran ganancia. Lucas 16:10-11: el que es fiel en lo poco, también en lo más es fiel.",
+ acc:"Hacer un presupuesto mensual sencillo (ingresos, gastos fijos y diezmo primero) y registrar mis gastos durante un mes.",
+ ev:"Anuncios de venta de la laptop y los trajes"},
+{n:6,d:"27 sep – 3 oct",k:"talentos",
+ sit:"Construí «Ensayo por voces», una aplicación web para escuchar por separado soprano, alto, tenor y bajo de los himnos del Nuevo Himnario Adventista y grabarme cantando cada voz. Preparé arreglos de los himnos 87 y 376.",
+ obs:"Por primera vez junté la programación con la música de la iglesia. Descubrí que mi talento técnico no tiene que servir solo para el trabajo o el dinero: también puede servir para alabar a Dios y ayudar a otros a ensayar.",
+ pri:"1 Pedro 4:10: cada uno, según el don que ha recibido, minístrelo a los otros. 1 Timoteo 4:14: no descuides el don que hay en ti.",
+ acc:"Compartir la aplicación con el coro o grupo de canto de la iglesia y usarla yo mismo para ensayar una vez por semana.",
+ ev:"Aplicación «Ensayo por voces» y archivos de los himnos 87 y 376"},
+{n:7,d:"4 – 10 oct",k:"finanzas",
+ sit:"Escribí la exposición de motivos para una beca de manutención, explicando que mis prácticas no son pagadas y que estudio en una universidad privada. Ese mismo día estuve cotizando bocinas nuevas para mi escritorio.",
+ obs:"Mientras pedía apoyo por necesidad económica, pensaba en una compra que no es necesaria. No es malo querer cosas, pero noté que no distingo bien entre lo que necesito y lo que quiero.",
+ pri:"1 Timoteo 6:6-8: teniendo sustento y abrigo, estemos contentos con esto. 1 Timoteo 6:17: no poner la esperanza en las riquezas, que son inciertas.",
+ acc:"Regla de espera: antes de una compra no esencial, anotarla en una lista y esperar dos semanas. Si después sigo necesitándola y el presupuesto lo permite, la compro.",
+ ev:"Exposición de motivos de la beca de manutención"},
+{n:8,d:"11 – 17 oct",k:"talentos",
+ sit:"Diagnostiqué por qué el lakehouse no podía consultar dos bases de datos externas: probé paso a paso hasta encontrar que la red bloqueaba la conexión y redacté la solicitud para el equipo de infraestructura. La semana anterior había dejado funcionando JupyterHub.",
+ obs:"Soy constante y metódico cuando algo técnico falla; no me rindo. Pero casi todo lo que aprendo se queda en mi cabeza o en mis notas personales, y mis compañeros no se benefician.",
+ pri:"2 Timoteo 2:15: obrero que no tiene de qué avergonzarse. 1 Timoteo 6:18: ser generosos y dispuestos a compartir, también lo que sé.",
+ acc:"Llevar una bitácora de problemas resueltos para el equipo (problema, causa y solución) que otros puedan consultar.",
+ ev:"Solicitud enviada a infraestructura y JupyterHub instalado"},
+{n:9,d:"18 – 24 oct",k:"espiritual",
+ sit:"Me postulé a Vicerrector Estudiantil con la planilla «Universidad del Mañana» y empecé la campaña en Instagram. Esa misma semana armé los formularios de testimonios para el negocio de velas de mi tía.",
+ obs:"La campaña me obligó a preguntarme por qué lo hago: ¿para servir o para tener un puesto? Con mi tía vi que ayudar a la familia también es servicio, aunque no sea algo que se vea en redes.",
+ pri:"1 Timoteo 4:12: ser ejemplo; el respeto se gana con hechos, no con el título. Gálatas 5:13: servirnos por amor los unos a los otros.",
+ acc:"Escribir en una frase qué servicio concreto quiero dar a los estudiantes y revisar cada publicación de la campaña con esa frase.",
+ ev:"Publicaciones de campaña y formularios de testimonios"},
+{n:10,d:"25 – 31 oct",k:"cuidado",
+ sit:"Fue una semana muy cargada. Ayudé a un compañero a conectarse a una base de datos, terminé mi portafolio web, tuve una evaluación de inglés y una entrevista de trabajo, entregué un informe técnico a mi jefe y avancé el sistema que hago para mi tía.",
+ obs:"Cumplí con todo, pero el descanso fue lo primero que sacrifiqué: dormí poco y comí a la carrera. Volví a caer en lo mismo de la semana 4, así que la acción que propuse entonces no se sostuvo.",
+ pri:"1 Corintios 6:19-20: mi cuerpo no es mío. 1 Timoteo 4:8: el ejercicio corporal para poco es provechoso, pero sí lo es.",
+ acc:"Fijar una hora para dormir (11:00 p. m.) y vigilar mis horas de sueño durante las semanas 11 a 14.",
+ ev:"Portafolio web publicado e informe técnico entregado"},
+{n:11,d:"1 – 7 nov",k:"tiempo",f:"Seguimiento de las semanas 1 y 3",
+ sit:"Semana con muchos frentes a la vez: el martes 3 resolví un examen exploratorio de ética y valores; del miércoles 4 al viernes 6 estudié Apocalipsis 4–6 y 19–22 para Conexión Bíblica con un plan de 45 a 60 minutos diarios; y el jueves 5 ayudé a una amiga a recuperar su WhatsApp, que alguien estaba usando para pedir dinero a sus contactos. Todo eso mientras seguía con las prácticas y el sistema de mi tía.",
+ obs:"Por primera vez armé un plan de estudio con horario fijo en lugar de dejarlo para la última noche. Al ver que el plan cabía en mi semana entendí que mi problema no es falta de tiempo, sino no planearlo. Y cuando planeo, me queda margen para ayudar a alguien que lo necesita de urgencia.",
+ pri:"Efesios 5:15-16: andar como sabios, aprovechando bien el tiempo. Salmo 90:12: enséñanos de tal modo a contar nuestros días.",
+ acc:"Planear cada domingo la semana completa, con bloques fijos para estudio, prácticas y tiempo con Dios, y revisar el sábado si lo cumplí.",
+ ev:"Plan de estudio de Apocalipsis para Conexión Bíblica (4 al 6 de noviembre) y examen exploratorio"},
+{n:12,d:"8 – 14 nov",k:"finanzas",f:"Seguimiento de las semanas 5 y 7",
+ sit:"Preparé con Joshua y Chris la presentación del dilema «El compañero que necesita ayuda»: ¿se puede usar el diezmo para ayudar a un compañero con problemas económicos? Estudiamos Malaquías 3:10, Números 18:21, Santiago 2:15-16 y 2 Corintios 9:7, y armé mi parte para que la clase leyera los textos y reflexionara. A principios de mes había terminado de recibir el pago por el primer módulo del sistema que hice para mi tía.",
+ obs:"Concluimos que el diezmo tiene un destino definido y que ayudar al necesitado sale de las ofrendas y del dinero propio; las dos cosas no se excluyen. Me confrontó, porque ahora que empiezo a recibir ingresos por mis proyectos tengo que decidir desde el principio qué parte es de Dios, cuál ahorro y cuál puedo dar, en lugar de ver qué sobra.",
+ pri:"Malaquías 3:10: traed todos los diezmos al alfolí. Mateo 23:23: practicar la justicia, la misericordia y la fe sin dejar de hacer lo otro. Gálatas 6:10: hagamos bien a todos.",
+ acc:"Con cada pago que reciba, separar primero el diezmo, después una ofrenda o ayuda, luego el ahorro, y solo entonces gastar lo demás.",
+ ev:"Presentación del dilema 3 sobre el diezmo (10 de noviembre)"},
+{n:13,d:"15 – 21 nov",k:"talentos",f:"Seguimiento de las semanas 6 y 8",
+ sit:"Coticé la segunda etapa del sistema de diagnóstico que hago para la consultoría de mi tía. Mi primer cálculo era demasiado alto para su presupuesto, así que reorganicé el trabajo en dos entregas y bajé el precio. Esa semana también grabé el video pitch de mi portafolio profesional y le di seguimiento a la dueña de una cafetería que abre en diciembre y quiere que le haga su sitio web y su app de pedidos.",
+ obs:"Mis talentos ya me generan ingresos, y eso trae una tentación nueva: cobrar lo más que pueda. Con mi tía tuve que equilibrar el valor real de mi trabajo con su situación. Sentí que ser justo al cobrar también es parte de administrar bien un don.",
+ pri:"Mateo 25:14-30: los talentos se multiplican cuando se ponen a trabajar. 1 Pedro 4:10: administrar los dones para servir a otros. 1 Timoteo 6:17-18: ser ricos en buenas obras.",
+ acc:"Definir mis precios con criterios claros (horas, alcance y la realidad del cliente) y reservar tiempo para proyectos de servicio sin cobro, como la aplicación de himnos.",
+ ev:"Cotización por entregas (18 de noviembre) y video pitch del portafolio"},
+{n:14,d:"22 – 28 nov",k:"cuidado",f:"Seguimiento de las semanas 4 y 10",
+ sit:"Última semana del diario y cierre del semestre: entregas finales, mis últimas semanas de prácticas, el proyecto de la cafetería y el arranque del segundo módulo con mi tía. La comparé con la semana 10, cuando el descanso fue lo primero que sacrifiqué, y esta vez traté de respetar la hora de dormir que me propuse.",
+ obs:"La carga no bajó; lo que cambió es que ahora la noto antes de que me rebase. Todavía me cuesta cortar en la noche cuando un proyecto está a medias, pero ya no lo veo como algo normal ni como prueba de que trabajo duro.",
+ pri:"1 Corintios 6:19-20: glorificad a Dios en vuestro cuerpo. Marcos 6:31: «Venid vosotros aparte a un lugar desierto, y descansad un poco».",
+ acc:"Para diciembre y enero, cuando empiece a trabajar tiempo completo: hora fija para dormir, una comida al día sin pantalla y caminar tres veces por semana.",
+ ev:"Registro de horas de sueño de la semana"}
+];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+$("strip").innerHTML=W.map(w=>`<a class="cell" href="#semana-${w.n}" style="--c:var(--${w.k})" title="Semana ${w.n} · ${DIMS[w.k]}"><i></i>${w.n}</a>`).join("");
+$("legend").innerHTML=`<button class="chip all" data-f="all" aria-pressed="true">Todas</button>`+Object.keys(DIMS).map(k=>`<button class="chip" data-f="${k}" style="--c:var(--${k})" aria-pressed="false">${DIMS[k]}</button>`).join("");
+const F=[["sit","Situación o experiencia"],["obs","Observación personal"],["pri","Principio de mayordomía"],["acc","Acción de mejora"]];
+$("timeline").innerHTML=W.map(w=>`<article class="week" id="semana-${w.n}" data-k="${w.k}" style="--c:var(--${w.k})">
+<div class="whead"><span class="wnum">Semana ${w.n}</span><span class="dates">${w.d} 2026</span><span class="dim">${DIMS[w.k]}</span>${w.f?`<span class="follow">${w.f}</span>`:""}</div>
+<div class="fields">${F.map(([k,l])=>`<div class="f${k==="obs"?" obs":""}"><h3>${l}</h3><p>${esc(w[k])}</p></div>`).join("")}</div>
+<div class="ev">Evidencia: ${esc(w.ev)}</div></article>`).join("");
+$("evid").innerHTML=W.map(w=>`<tr><td class="n">${w.n}</td><td class="d" style="--c:var(--${w.k})"><span></span>${DIMS[w.k]}</td><td>${esc(w.ev)}</td></tr>`).join("");
+$("legend").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const f=b.dataset.f;
+ document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c===b));
+ document.querySelectorAll(".week").forEach(a=>a.hidden=!(f==="all"||a.dataset.k===f));});
+</script>
+</body>
+</html>
